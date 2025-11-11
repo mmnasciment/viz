@@ -1,5 +1,3 @@
 # Ignora o node_modules
 node_modules/
-
-# Ignora todos os arquivos .parquet dentro da pasta parquet/
-parquet/*.parquet
+public/

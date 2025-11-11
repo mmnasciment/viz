@@ -1,22 +1,22 @@
 import { loadDb } from './config.js';
-import { renderizarContagemDiaria, renderizarTiposPagamento } from './visualizacoes.js';
+import { 
+  renderizarContagemDiaria, 
+  renderizarKpisAgregados // Removemos renderizarTiposPagamento e renderizarHeatmap
+} from './visualizacoes.js';
 
 const loadBtn = document.getElementById('loadBtn');
 const diagnosticoArea = document.getElementById('diagnosticoArea');
 
-// --- Defina os arquivos que estão na sua pasta /parquet/ ---
 const ARQUIVOS_PARQUET = [
   'yellow_tripdata_2018-12.parquet',
   'yellow_tripdata_2020-12.parquet',
   'yellow_tripdata_2022-12.parquet',
 ];
 
-// Converte uma tabela Arrow para um Array de Objetos JS
 function arrowTableToJSON(table) {
   return table.toArray().map(Object.fromEntries);
 }
 
-// Formata os resultados da query de diagnóstico para exibição
 function formatarDiagnostico(diagData) {
   if (!diagData || diagData.length === 0) {
     return "<p>Nenhum dado encontrado.</p>";
@@ -34,39 +34,44 @@ Anos na Amostra: ${anos_unicos}
   `;
 }
 
-// Evento principal de clique no botão
 loadBtn.addEventListener('click', async () => {
   loadBtn.disabled = true;
   diagnosticoArea.innerHTML = `<p>Iniciando o DuckDB... (isso pode levar alguns segundos)</p>`;
 
   try {
-    // 1. Carregar o DuckDB (Versão Completa "EH")
     const db = await loadDb();
     diagnosticoArea.innerHTML += `<p>DuckDB carregado. Iniciando conexão...</p>`;
     
     const conn = await db.connect();
-    diagnosticoArea.innerHTML += `<p>Conexão estabelecida. Registrando arquivos do servidor...</p>`;
+    diagnosticoArea.innerHTML += `<p>Conexão estabelecida. Registrando arquivos...</p>`;
 
-    // 2. MUDANÇA PRINCIPAL: Registrar arquivos via URL
+    // --- SUA SOLUÇÃO (ÓTIMA!) ---
     for (const file of ARQUIVOS_PARQUET) {
-      const caminho = `parquet/${file}`; // Caminho relativo à pasta 'public' ou raiz
-      await db.registerFileURL(file, caminho);
-      diagnosticoArea.innerHTML += `<p>Arquivo '${file}' registrado via URL.</p>`;
+      const resp = await fetch(`/parquet/${file}`);
+      const buf = await resp.arrayBuffer();
+      await db.registerFileBuffer(file, new Uint8Array(buf));
+      diagnosticoArea.innerHTML += `<p>Arquivo '${file}' carregado via Buffer.</p>`;
     }
+    // ----------------------------
 
     diagnosticoArea.innerHTML += `<p>Arquivos registrados. Criando tabela 'taxis' unificada...</p>`;
     
-    // 3. Criar a tabela 'taxis'
+    // 3. Criar a tabela 'taxis' (QUERY MODIFICADA)
+    // Selecionamos APENAS as colunas que existem
     const fileNames = ARQUIVOS_PARQUET.map(f => `'${f}'`);
     const createTableQuery = `
       CREATE TABLE taxis AS 
       SELECT 
         tpep_pickup_datetime,
-        payment_type,
+        tpep_dropoff_datetime,
+        trip_distance,
+        tip_amount,
         strftime(tpep_pickup_datetime, '%Y') AS ano,
-        strftime(tpep_pickup_datetime, '%m-%d') AS dia_mes
+        strftime(tpep_pickup_datetime, '%m-%d') AS dia_mes,
+        (epoch(tpep_dropoff_datetime) - epoch(tpep_pickup_datetime)) / 60.0 AS duracao_minutos
       FROM read_parquet([${fileNames.join(', ')}])
-      WHERE strftime(tpep_pickup_datetime, '%m') = '12';
+      WHERE strftime(tpep_pickup_datetime, '%m') = '12'
+        AND strftime(tpep_pickup_datetime, '%Y') IN ('2018', '2020', '2022');
     `;
     await conn.query(createTableQuery);
     diagnosticoArea.innerHTML += `<p>Tabela 'taxis' criada com sucesso.</p>`;
@@ -99,31 +104,36 @@ loadBtn.addEventListener('click', async () => {
     const tsResult = await conn.query(timeSeriesQuery);
     const tsData = arrowTableToJSON(tsResult);
     
-    // 6. Executar Query Analítica 2: Métodos de Pagamento
-    diagnosticoArea.innerHTML += `<p>Executando consulta analítica 2 (pagamentos)...</sjp>`;
-    const paymentQuery = `
+    // 6. QUERY REMOVIDA (paymentQuery)
+
+    // 7. Executar Query Analítica 3: KPIs Agregados (MODIFICADA)
+    diagnosticoArea.innerHTML += `<p>Executando consulta analítica 2 (KPIs)...</p>`;
+    const queryKPIs = `
       SELECT 
         ano,
-        CASE 
-          WHEN payment_type = 1 THEN 'Cartão de Crédito'
-          WHEN payment_type = 2 THEN 'Dinheiro'
-          ELSE 'Outros' 
-        END AS metodo_pagamento,
-        COUNT(*) AS num_corridas
+        AVG(trip_distance) AS distancia_media,
+        AVG(tip_amount) AS gorjeta_media, -- Trocamos 'receita_media' por 'gorjeta_media'
+        AVG(duracao_minutos) AS duracao_media
+        -- Removemos 'passageiros_media'
       FROM taxis
-      GROUP BY ano, metodo_pagamento
-      ORDER BY ano, metodo_pagamento;
+      WHERE duracao_minutos BETWEEN 1 AND 240
+        AND trip_distance < 100
+        AND tip_amount BETWEEN 0 AND 1000
+      GROUP BY ano
+      ORDER BY ano;
     `;
-    const payResult = await conn.query(paymentQuery);
-    const payData = arrowTableToJSON(payResult);
+    const kpiResult = await conn.query(queryKPIs);
+    const kpiData = arrowTableToJSON(kpiResult);
 
-    // 7. Renderizar Visualizações D3.js
+    // 8. QUERY REMOVIDA (queryHeatmap)
+
+    // 9. Renderizar Visualizações D3.js
     diagnosticoArea.innerHTML += `<p>Renderizando visualizações...</p>`;
     renderizarContagemDiaria(tsData);
-    renderizarTiposPagamento(payData);
+    renderizarKpisAgregados(kpiData); // Chamada modificada
     diagnosticoArea.innerHTML += `<p>Análise concluída!</p>`;
 
-    // 8. Limpar conexão
+    // 10. Limpar conexão
     await conn.close();
 
   } catch (error) {

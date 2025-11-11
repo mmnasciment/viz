@@ -21,7 +21,8 @@ export async function loadDb() {
 
   // Instantiate the asynchronus version of DuckDB-wasm
   const worker = new Worker(bundle.mainWorker);
-  const logger = new duckDblog.ConsoleLogger();
+  // LINHA CORRIGIDA ABAIXO
+  const logger = new duckdb.ConsoleLogger(); 
   const db = new duckdb.AsyncDuckDB(logger, worker);
   await db.instantiate(bundle.mainModule, bundle.pthreadWorker);
 
