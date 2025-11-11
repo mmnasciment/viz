@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Narrativa Táxis NYC</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+  <h1>Táxis em NYC – Análise Pandemia (Dez 2018, 2020, 2022)</h1>
+
+  <section id="upload">
+    <h2>Análise de Dados</h2>
+    <p>Os arquivos Parquet estão sendo carregados diretamente da pasta <code>/parquet/</code> do projeto.</p>
+    <button id="loadBtn">Iniciar Análise</button>
+  </section>
+
+  <section id="diagnostico">
+    <h2>Diagnóstico Inicial</h2>
+    <div id="diagnosticoArea"></div>
+  </section>
+
+  <section id="visualizacao">
+    <h2>Visualizações D3.js</h2>
+    <div id="vizArea">
+      <div id="vizContagemDiaria">
+        <h3>Corridas Diárias (Dezembro)</h3>
+      </div>
+      <div id="vizTiposPagamento">
+        <h3>Métodos de Pagamento (Dezembro)</h3>
+      </div>
+    </div>
+  </section>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>
