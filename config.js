@@ -17,7 +17,9 @@ const MANUAL_BUNDLES = {
 
 export async function loadDb() {
   // Select a bundle based on browser checks
-  const bundle = await duckdb.selectBundle(MANUAL_BUNDLES);
+  // FORÇA O BUNDLE 'mvp' PARA MELHOR COMPATIBILIDADE
+const bundle = MANUAL_BUNDLES.mvp;
+console.warn("Forçando bundle MVP do DuckDB. O SharedArrayBuffer está desabilitado.");
 
   // Instantiate the asynchronus version of DuckDB-wasm
   const worker = new Worker(bundle.mainWorker);
