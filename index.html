@@ -2,36 +2,127 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Narrativa Táxis NYC</title>
+  <title>ENEM 2024 — Uma Jornada pelos Dados</title>
   <link rel="stylesheet" href="style.css">
-  </head>
+</head>
 <body>
-  <h1>Táxis em NYC – Análise Pandemia (Dez 2018, 2020, 2022)</h1>
+  <header>
+    <h1>ENEM 2024: Uma Jornada pelos Dados Educacionais do Brasil</h1>
+    <p class="subtitle">Explorando o desempenho de milhões de estudantes através de visualizações interativas</p>
+  </header>
 
-  <section id="upload">
-    <h2>Análise de Dados</h2>
-    <p>Os arquivos Parquet estão sendo carregados diretamente da pasta <code>/parquet/</code> do projeto.</p>
-    <button id="loadBtn">Iniciar Análise</button>
+  <section id="controles">
+    <button id="loadBtn" class="btn-primary">Iniciar Análise</button>
   </section>
 
   <section id="diagnostico">
-    <h2>Diagnóstico Inicial</h2>
     <div id="diagnosticoArea"></div>
   </section>
 
-  <section id="visualizacao">
-    <h2>Visualizações D3.js</h2>
-    <div id="vizArea">
-      <div id="vizContagemDiaria">
-        <h3>Corridas Diárias (Dezembro)</h3>
+  <!-- ATO I: PANORAMA GERAL -->
+  <section class="ato">
+    <div class="ato-header">
+      <span class="ato-numero">Ato I</span>
+      <h2>Quem São os Participantes?</h2>
+      <p class="ato-desc">Entendendo o perfil demográfico dos candidatos do ENEM 2024</p>
+    </div>
+
+    <div class="viz-row">
+      <div class="chart-container">
+        <h3>1. Participação por Gênero</h3>
+        <p class="chart-desc">Distribuição de participantes entre masculino e feminino</p>
+        <div id="viz1Genero"></div>
       </div>
-      
-      <div id="vizKPIs">
-        <h3>Métricas Médias por Ano (Dezembro)</h3>
-        </div>
-      
+
+      <div class="chart-container">
+        <h3>2. Faixa Etária dos Candidatos</h3>
+        <p class="chart-desc">Perfil de idade dos participantes</p>
+        <div id="viz2Idade"></div>
       </div>
+    </div>
+
+    <div class="viz-row">
+      <div class="chart-container full-width">
+        <h3>3. Distribuição Geográfica Nacional</h3>
+        <p class="chart-desc">Top 15 estados com maior participação</p>
+        <div id="viz3Estados"></div>
+      </div>
+    </div>
   </section>
+
+  <!-- ATO II: DESEMPENHO ACADÊMICO -->
+  <section class="ato">
+    <div class="ato-header">
+      <span class="ato-numero">Ato II</span>
+      <h2>Como Foi o Desempenho?</h2>
+      <p class="ato-desc">Análise das notas e comparações entre áreas de conhecimento</p>
+    </div>
+
+    <div class="viz-row">
+      <div class="chart-container">
+        <h3>4. Médias por Área de Conhecimento</h3>
+        <p class="chart-desc">Comparação das médias nacionais por disciplina</p>
+        <div id="viz4MediasGerais"></div>
+      </div>
+
+      <div class="chart-container">
+        <h3>5. Desempenho por Gênero</h3>
+        <p class="chart-desc">Médias de cada área separadas por gênero</p>
+        <div id="viz5MediasGenero"></div>
+      </div>
+    </div>
+
+    <div class="viz-row">
+      <div class="chart-container full-width">
+        <h3>6. Distribuição de Notas na Redação</h3>
+        <p class="chart-desc">Histograma mostrando a distribuição das notas de 0 a 1000</p>
+        <div id="viz6HistRedacao"></div>
+      </div>
+    </div>
+
+    <div class="viz-row">
+      <div class="chart-container">
+        <h3>7. Box Plot: Dispersão das Notas</h3>
+        <p class="chart-desc">Mediana, quartis e outliers por área</p>
+        <div id="viz7BoxPlot"></div>
+      </div>
+
+      <div class="chart-container">
+        <h3>8. Correlação entre Áreas</h3>
+        <p class="chart-desc">Heatmap de correlação entre as notas</p>
+        <div id="viz8Correlacao"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ATO III: INSIGHTS REGIONAIS -->
+  <section class="ato">
+    <div class="ato-header">
+      <span class="ato-numero">Ato III</span>
+      <h2>E as Diferenças Regionais?</h2>
+      <p class="ato-desc">Explorando desempenho e participação por localidade</p>
+    </div>
+
+    <div class="viz-row">
+      <div class="chart-container full-width">
+        <h3>9. Top 10 Municípios do Rio de Janeiro</h3>
+        <p class="chart-desc">Municípios com maior número de participantes</p>
+        <div id="viz9TopMunicipios"></div>
+      </div>
+    </div>
+
+    <div class="viz-row">
+      <div class="chart-container full-width">
+        <h3>10. Mapa: Média de Redação por Município — RJ</h3>
+        <p class="chart-desc">Visualização geográfica do desempenho médio em redação</p>
+        <div id="viz10MapaRJ"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Fonte: Microdados ENEM 2024 | Visualização desenvolvida com D3.js e DuckDB-WASM</p>
+  </footer>
 
   <script type="module" src="main.js"></script>
 </body>

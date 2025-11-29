@@ -1,3 +1,28 @@
-# Ignora o node_modules
+# Dependências
 node_modules/
-public/
+package-lock.json
+
+# Arquivos Parquet (enviados separadamente via WhatsApp)
+*.parquet
+public/parquet/*.parquet
+!public/parquet/.gitkeep
+
+# Build
+dist/
+.vite/
+
+# IDEs
+.vscode/
+.idea/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Ambiente
+.env
+.env.local

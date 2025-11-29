@@ -1,0 +1,4 @@
+# Este arquivo mantém a pasta parquet no Git
+# Coloque os arquivos .parquet aqui:
+# - PARTICIPANTES_2024.parquet
+# - RESULTADOS_2024.parquet

@@ -1,52 +1,190 @@
+:root {
+  --cor-primaria: #2C3E50;
+  --cor-secundaria: #3498DB;
+  --cor-destaque: #E74C3C;
+  --cor-sucesso: #27AE60;
+  --cor-aviso: #F39C12;
+  --cor-neutro: #95A5A6;
+  --cor-fundo: #ECF0F1;
+  --cor-texto: #2C3E50;
+  
+  /* Paleta para gráficos */
+  --cor-masculino: #3498DB;
+  --cor-feminino: #E74C3C;
+  --cor-cn: #9B59B6;
+  --cor-ch: #F39C12;
+  --cor-lc: #1ABC9C;
+  --cor-mt: #E67E22;
+  --cor-redacao: #34495E;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  margin: 40px;
-  background: #fafafa;
-  color: #333;
-}
-section {
-  margin-bottom: 40px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: var(--cor-texto);
+  line-height: 1.6;
   padding: 20px;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 0 6px #cecece;
 }
-h1, h2, h3 {
-  color: #25324a;
+
+header {
+  text-align: center;
+  background: white;
+  padding: 40px 20px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  margin-bottom: 30px;
 }
-button {
-  padding: 8px 16px;
-  border-radius: 4px;
+
+header h1 {
+  font-size: 2.5em;
+  color: var(--cor-primaria);
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.subtitle {
+  font-size: 1.2em;
+  color: var(--cor-neutro);
+  font-weight: 300;
+}
+
+#controles {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--cor-secundaria), var(--cor-primaria));
+  color: white;
   border: none;
-  background: #334ebc;
-  color: #fff;
-  font-size: 1em;
+  padding: 15px 40px;
+  font-size: 1.1em;
+  border-radius: 50px;
   cursor: pointer;
+  box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+  transition: all 0.3s ease;
+  font-weight: 600;
 }
-button:hover {
-  background: #2a3e99;
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(52, 152, 219, 0.6);
 }
-button:disabled {
-  background: #999;
+
+.btn-primary:disabled {
+  background: var(--cor-neutro);
   cursor: not-allowed;
+  box-shadow: none;
 }
-pre {
-  background: #eee;
-  padding: 10px;
-  border-radius: 4px;
-  white-space: pre-wrap;
+
+#diagnostico {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
-#diagnosticoArea {
-  font-family: 'Courier New', Courier, monospace;
+
+#diagnosticoArea pre {
+  background: var(--cor-fundo);
+  padding: 20px;
+  border-radius: 8px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.95em;
+  overflow-x: auto;
+  border-left: 4px solid var(--cor-secundaria);
+}
+
+.ato {
+  background: white;
+  border-radius: 15px;
+  padding: 40px;
+  margin-bottom: 40px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.ato-header {
+  text-align: center;
+  margin-bottom: 40px;
+  position: relative;
+  padding-bottom: 20px;
+}
+
+.ato-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--cor-secundaria), var(--cor-destaque));
+}
+
+.ato-numero {
+  display: inline-block;
+  background: var(--cor-secundaria);
+  color: white;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 0.9em;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.ato h2 {
+  font-size: 2em;
+  color: var(--cor-primaria);
+  margin: 15px 0 10px;
+}
+
+.ato-desc {
+  font-size: 1.1em;
+  color: var(--cor-neutro);
+  font-weight: 300;
+}
+
+.viz-row {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.chart-container {
+  flex: 1;
+  min-width: 400px;
+  background: var(--cor-fundo);
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+.chart-container.full-width {
+  flex: 1 1 100%;
+  min-width: 100%;
+}
+
+.chart-container h3 {
+  color: var(--cor-primaria);
+  margin-bottom: 8px;
+  font-size: 1.3em;
+}
+
+.chart-desc {
+  color: var(--cor-neutro);
+  font-size: 0.9em;
+  margin-bottom: 20px;
+  font-style: italic;
 }
 
 /* --- Estilos D3.js --- */
-.chart-container {
-  width: 100%;
-  max-width: 900px;
-  margin: auto;
-}
-
 /* Estilo para os eixos */
 .axis path,
 .axis line {
@@ -55,7 +193,7 @@ pre {
   shape-rendering: crispEdges;
 }
 .axis text {
-  font-size: 11px;
+  font-size: 12px;
   fill: #333;
 }
 
@@ -75,4 +213,90 @@ pre {
   border-radius: 4px;
   font-size: 12px;
   text-align: left;
+}
+
+#vizMapaRJ path {
+  transition: opacity .15s ease-in-out;
+}
+
+#vizMapaRJ path:hover {
+  opacity: 0.85;
+}
+
+/* Tooltip D3 */
+.d3-tooltip {
+  background: rgba(44, 62, 80, 0.95);
+  color: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.9em;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  pointer-events: none;
+  z-index: 1000;
+  max-width: 250px;
+  line-height: 1.5;
+}
+
+.d3-tooltip strong {
+  color: #3498DB;
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Eixos D3 */
+.axis path,
+.axis line {
+  stroke: #BDC3C7;
+  stroke-width: 1px;
+}
+
+.axis text {
+  font-size: 11px;
+  fill: var(--cor-texto);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Legendas */
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 20px;
+  font-size: 0.9em;
+}
+
+.legend-color {
+  width: 16px;
+  height: 16px;
+  margin-right: 6px;
+  border-radius: 3px;
+}
+
+/* Anotações em gráficos */
+.chart-annotation {
+  font-size: 0.85em;
+  fill: var(--cor-neutro);
+  font-style: italic;
+}
+
+footer {
+  text-align: center;
+  color: white;
+  padding: 20px;
+  font-size: 0.9em;
+  opacity: 0.9;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.8em;
+  }
+  
+  .viz-row {
+    flex-direction: column;
+  }
+  
+  .chart-container {
+    min-width: 100%;
+  }
 }
